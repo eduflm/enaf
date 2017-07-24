@@ -1,0 +1,19 @@
+
+.login{
+	background-color: #1b1f32;
+}
+
+body{
+	background-image: url("../imgs/Background.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.panel{
+	background: none;
+}
+ 
+a, .panel-body {
+    text-decoration: none;
+    color: white;
+} 

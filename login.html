@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login ENAF</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/geral.css">
+    <link rel="stylesheet" href="css/estiloLogin.css">
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+            $("#error").hide();
+            $('#btnLogin').click(function(){    //Ao submeter formulário
+                var input = $('#formLogin').serialize();
+                $.ajax({            //Função AJAX
+                    url:"php/login.php",         //Arquivo php
+                    type:"post",                //Método de envio
+                    data: input,    //Dados
+                    success: function (result){ 
+                                if(result==1){  
+                                    location.href='visualizarCadastro.html'  //Redireciona
+                                }else{
+                                    $("#error").show();
+                                }
+                            }
+                })
+                return false;   //Evita que a página seja atualizada
+            })
+    })
+    </script>
+</head>
+<body>
+
+    <div class="container">
+            
+        <div class="row" id="logo">
+            <div class="col-md-4 col-md-offset-4">
+                <div>
+                    <img src="imgs/logo2.png">
+                </div>
+            </div>
+        </div>
+
+        <div id="error" class="alert alert-danger">
+            Usuário ou senha incorretos.
+        </div>
+
+        <form id="formLogin">
+            <div class="">
+                
+                <div id="login" class="login">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                                
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input id="email" type="email" name="email" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="senha">Senha</label>
+                                <input id="senha" type="password" name="senha" class="form-control">
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                  <input type="checkbox"> Lembrar usuário
+                                </label>
+                            </div>
+
+                              <a id="btnLogin" class="pull-right btn btn-default">Login</a>
+
+                            <div> 
+                                <br>
+                                <a href="cadastro.html">Cadastrar</a>    
+                                <br>
+                                <a href="index.html">
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                                    <span>Voltar ao ENAF</span>
+                                </a>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>	
+        </form>
+
+        <div class="row">
+            
+        </div>
+        
+
+    </div>
+    
+</body>
+</html>

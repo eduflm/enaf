@@ -1,0 +1,186 @@
+
+.linha-horizontal {
+margin: 0px;
+border-top: 1px solid;
+}
+
+body,.form-control{
+	background-color: #fafafa;
+}
+input{
+	background-color: #fafafa;
+}
+
+
+.panel-body{
+	padding-left: 0px;
+}
+
+
+.conteudo{
+	padding: 20px;
+	width: 84vw; 
+	float: right;
+    margin-left: 15%; 
+	z-index: 0;
+}
+
+.menu-lateral{
+	background-color: #1b1f32;
+	width: 15vw;
+	position: fixed;
+	left: 0;
+	top: 0px;
+	padding: 20px;
+	height: 100vh;
+	z-index: 1;
+
+}
+.img{
+	width: 100%;
+
+}
+.img-topo{
+	width: auto;
+	height: 15vh;
+	margin-left: 2vh;
+	display: none;
+
+}
+
+.menu-topo{
+	display: none;
+	height: 15vh;
+	width: 100%;
+	padding: 0px;
+	z-index: 1;
+	position: fixed;
+	background-color: #1b1f32;
+	left: 0;
+	top: 0px;
+	transition: height 0.333s linear;
+
+}
+
+#botoes{
+	margin-top: 30px;
+	visibility: hidden;
+	transition: opacity 2s;
+	opacity: 0;
+}
+
+.botao1{
+	margin-left: 25%;
+	
+}
+.botao2{
+	margin-left: 10%;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+}
+/* unvisited link */
+a:link {
+    color: white;
+    text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+	color: white;
+    text-decoration: none;
+}
+
+a:hover {
+	color: gray;
+    text-decoration: none;
+}
+
+
+.menu-3-linhas{
+	float: right;
+	width: 10vh;
+	background: none;
+	margin-top: 2.5vh;
+	margin-right: 2.5vh;
+	border: none;
+
+}
+
+
+
+
+hr{
+	border-width: 2px;
+	padding: 0px;
+	margin: 0px;
+	margin-top: 2vh;
+	margin-bottom: 2vh;
+	width: 80%;
+}
+
+input[type="radio"] {
+    display:none;
+
+}
+input[type="radio"] + label {
+    color: black;
+    font-size:14px;
+    padding: 0px;
+}
+input[type="radio"] + label span {
+    display:inline-block;
+    width:19px;
+    height:19px;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  20%;
+    border-radius:  20%;
+    border-style: solid;
+    border-width: 1px;
+}
+
+input[type="radio"] + label span {
+     background-color: #fafafa;
+
+}
+
+input[type="radio"]:checked + label span{
+     background-color: #1b1f32;
+}
+
+input[type="radio"] + label span,
+input[type="radio"]:checked + label span {
+  -webkit-transition:background-color 0.4s linear;
+  -o-transition:background-color 0.4s linear;
+  -moz-transition:background-color 0.4s linear;
+  transition:background-color 0.4s linear;
+}
+
+
+@media screen and (max-width: 742px) {
+    .menu-lateral{
+    	display: none;
+    }
+    .menu-topo{
+    	display: inline-block;
+    	padding: 1px;
+    }
+    .img-topo{
+    	display: inline-block;
+    }
+    .conteudo{
+    	margin-top: 12vh;
+    	margin-right: 7.5vw;
+    }
+
+    .menu-3-linhas{
+    	display: inline-block;
+
+    }
+
+}
+

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/geral.css">
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="js/jquery.mask.js"></script>
+
+    <script>
+    $(document).ready(function(){
+    	$("#error").hide();
+        $("#errorCampoVazio").hide();
+        $("#CPF").mask('000.000.000-00');
+        $("#Nascimento").mask("00/00/0000");
+        $('#Telefone').mask('(00) 0000-00009');
+        $("#CEP").mask("00000-000");
+        $('#Telefone').blur(function(event) {
+           if($(this).val().length == 15){ // Celular com 9 dígitos + 2 dígitos DDD e 4 da máscara
+              $('#Telefone').mask('(00) 00000-0009');
+           } else {
+              $('#Telefone').mask('(00) 0000-00009');
+           }
+        });
+        //$('#Telefone').mask('(99) 99999-9999');
+        $('#btnCadastro').click(function(){
+            $("#errorCampoVazio").empty();
+            $("#error").empty();
+            $("#error").hide();
+            $("#errorCampoVazio").hide();
+
+            if (verificaCampos() == 0){
+                $("#errorCampoVazio").show();
+                return;
+            }
+            var input = $('#formCadastro').serialize();
+            console.log(input);
+            $.ajax({            //Função AJAX
+                url:"php/cadastro.php",         //Arquivo php
+                type:"post",                //Método de envio
+                data: input,    //Dados
+                success: function (result){ 
+                            console.log(result);
+                            if(result==1){ 
+                                console.log(result);
+                                location.href='visualizarCadastro.html'  //Redireciona
+                            }else{
+                                $("#error").append(result);
+                                $("#error").show();
+
+                            }
+                        }
+            })
+            return false;   //Evita que a página seja atualizada
+        })
+
+    function verificaCampos(){
+          if ( ! $("#Sexo").is(':checked') ){
+            $("#errorCampoVazio").append('Informe um sexo para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Nome").val() == ''){
+            $("#errorCampoVazio").append('Informe um nome para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Nascimento").val() == ''){
+            $("#errorCampoVazio").append('Informe uma data de nascimento para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#CPF").val() == ''){
+            $("#errorCampoVazio").append('Informe um CPF para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#RG").val() == ''){
+            $("#errorCampoVazio").append('Informe um RG para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Telefone").val() == ''){
+            $("#errorCampoVazio").append('Informe um telefone para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#CEP").val() == ''){
+            $("#errorCampoVazio").append('Informe um CEP para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Logradouro").val() == ''){
+            $("#errorCampoVazio").append('Informe um logradouro para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Numero").val() == ''){
+            $("#errorCampoVazio").append('Informe o número da sua residencia para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Bairro").val() == ''){
+            $("#errorCampoVazio").append('Informe um Bairro para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Cidade").val() == ''){
+            $("#errorCampoVazio").append('Informe sua cidade para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Bairro").val() == ''){
+            $("#errorCampoVazio").append('Informe seu bairro para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Email").val() == ''){
+            $("#errorCampoVazio").append('Informe um email para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#Senha").val() == ''){
+            $("#errorCampoVazio").append('Informe uma senha para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#confSenha").val() == ''){
+            $("#errorCampoVazio").append('Confirme sua senha para realizar o cadastro.');
+            return 0;
+        }
+        if ($("#confSenha").val() != $("#Senha").val()){
+            $("#errorCampoVazio").append('Senha informada diferente da senha de confirmação.');
+            return 0;
+        }
+        return 1;
+    }
+
+    function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#Logradouro").val("");
+                $("#Bairro").val("");
+                $("#Cidade").val("");
+                $("#Estado").val("");
+            }
+            
+            //Quando o campo cep perde o foco.
+            $("#CEP").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if(validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#rua").val("...");
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#uf").val("...");
+                        $("#ibge").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("//viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#Logradouro").val(dados.logradouro);
+                                $("#Bairro").val(dados.bairro);
+                                $("#Cidade").val(dados.localidade);
+                                $("#Estado").val(dados.uf);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+    
+    </script>
+</head>
+<body>
+        <div id="error" class="alert alert-danger">            
+        </div>
+        <div id="errorCampoVazio" class="alert alert-danger">
+        </div>
+    <div class="container">
+        <form id="formCadastro">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div id="cadastro">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4>Cadastro</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="Nome">Nome Completo</label>
+                                    <input type="text" class="form-control" name="Nome" id="Nome">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sexo</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Sexo" id="Sexo" value="M">
+                                            Masculino
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="Sexo" id="Sexo" value="F">
+                                            Feminino
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                
+                               
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="Nascimento">Data de Nascimento</label>
+                                            <input type="text" id="Nascimento" name="Nascimento" placeholder="dd/mm/aaaa" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="CPF">CPF</label>
+                                            <input type="text" id="CPF" name="CPF" class="form-control" maxlength="11" placeholder="000.000.000-00">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="RG">RG</label>
+                                            <input type="text" id="RG" name="RG" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="Telefone">Telefone</label>
+                                    <input type="text" id="Telefone" name="Telefone" class="form-control" placeholder ="(xx)xxxxx-xxxx">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="CEP">CEP</label>
+                                    <input type="text" id="CEP" name="CEP" class="form-control" maxlength="8" placeholder="00000-000">
+                                </div>
+
+
+                                <div class="row">
+                                
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="Logradouro">Logradouro</label>
+                                            <input type="text" id="Logradouro" name="Logradouro" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="Numero">Número</label>
+                                            <input type="number" id="numero" name="Numero" class="form-control">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Bairro">Bairro</label>
+                                    <input type="text" id="Bairro" name="Bairro" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Complemento">Complemento</label>
+                                    <input type="text" id="Complemento" name="Complemento" class="form-control">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Cidade">Cidade</label>
+                                            <input type="text" id="Cidade" name="Cidade" class="form-control">
+                                        </div>	
+                                    </div>
+                                        
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Estado">Estado</label>
+                                            <input type="text" id="Estado" name="Estado" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                                <br>
+                                <div class="form-group">
+                                    <label for="Email">Login (Email)</label>
+                                    <input type="email" id="Email" name="Email" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Senha">Senha</label>
+                                    <input type="password" id="Senha" name="Senha" class="form-control">
+
+                                    <label for="confSenha">Confirmar Senha</label>
+                                    <input type="password" id="confSenha" name="confSenha" class="form-control">
+                                </div>
+
+                                <a id="btnCadastro" class="pull-right btn btn-default">Inscrever</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
